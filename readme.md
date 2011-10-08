@@ -39,5 +39,5 @@ This way you can inherit styles and override the ones you want to override witho
 * make sure your cursor is at the beginning of the file  
 * press [Del] 20 times  
 * save the file  
-
+this will disable the use via jQuery since that way of working needs a reference from the global scope, but it works without it as well, ill wrap it as a jQuery plugin when there's a need but I like the fact that it works with the same code in and out of jQuery now.
 
