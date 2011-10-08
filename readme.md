@@ -4,8 +4,8 @@ This changes the actual &lt;style&gt; node in the DOM instead of computing the s
 This is usefull when adding new nodes to a container which is "scoped".  
 It does so by prepending the styleRules selectorText with id's to syntheticaly up the styleRules' specificity and thus overriding the styles from the root.
 
-# Tested on:
-IE 6, 7, 8  
+# Tested (and working) on:
+IE 6, 7, 8 (i'll test it on IE9 soon)  
 FF latest mac/Windows  
 Google Chrome latest mac/Windows  
 Opera latest Mac/Windows  
