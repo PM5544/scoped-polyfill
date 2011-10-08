@@ -1,9 +1,9 @@
-Scoped polyfill for HTML5 <style scoped> elements 
+<h1>Scoped polyfill for HTML5 &lt;style scoped&gt; elements</h1> 
 
-This changes the actual <style> node in the DOM instead of computing the styles certain nodes might get and applying them on them inline.
-This is usefull when adding new nodes to a container which is "scoped".
+<p>This changes the actual <style> node in the DOM instead of computing the styles certain nodes might get and applying them on them inline.
+This is usefull when adding new nodes to a container which is "scoped".<br />
 It does so by prepending the styleRules selectorText with id's to synteticly up the styleRules' specificity and thus overriding the styles from the root.
-
+</p>
 
 Tested on:
 
