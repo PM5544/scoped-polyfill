@@ -1,0 +1,25 @@
+*{
+    background:#bada55;
+    color:#f00;
+    padding:10px;
+}
+.widgetContent,
+.widgetContent *{
+    border: 2px solid #000;
+}
+li{
+    list-style:none;
+}
+ul, ol, p{
+    padding:0;
+    margin:0;
+}
+.widgetContent{
+    width:300px;
+    height:auto;
+    margin:30px;
+    float:left;
+}
+.widgetContent{
+    font-family: comic-sans,Geneva, serif;
+}
