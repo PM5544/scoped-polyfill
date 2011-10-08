@@ -8,9 +8,9 @@ It does so by prepending the styleRules selectorText with id's to syntheticaly u
 [an example with jQuery](http://pm5544.eu/scoped/indexjquery.htm "clicky for example")  
 
 # Tested (and working) on:
-* IE 6, 7, 8 (Yes also in FrankensteinMode&trade;, i'll test it on IE9 soon)  
-* FF latest mac/Windows  
-* Google Chrome latest mac/Windows  
+* IE 6, 7, 8, 9 (Yes also in all the FrankensteinModes&trade;)  
+* Firefox latest Mac/Windows/Linux(Ubuntu)  
+* Google Chrome latest Mac/Windows/Linux(Ubuntu)  
 * Opera latest Mac/Windows  
 * Safari latest Mac/Windows  
 
