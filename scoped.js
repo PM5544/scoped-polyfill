@@ -1,11 +1,11 @@
-var scopePolyFill = ( function ( doc )
+var scopedPolyFill = ( function ( doc )
 {
-    // check for support of scope and certain option
+    // check for support of scoped and certain option
     var compat = (function ()
     {
         var check           = doc.createElement( 'style' )
         ,   DOMStyle        = 'undefined' !== typeof check.sheet ? 'sheet' : 'undefined' !== typeof check.getSheet ? 'getSheet' : 'styleSheet'
-        ,   scopeSupported  = '' === check.scope
+        ,   scopeSupported  = '' === check.scoped
         ,   testSheet
         ,   DOMRules
         ,   testStyle
@@ -17,23 +17,24 @@ var scopePolyFill = ( function ( doc )
         testSheet           = check[ DOMStyle ]
 
         // add a test styleRule to be able to test selectorText changing support
-        // IE doent allow inserting of '' as a styleRule
+        // IE doesn't allow inserting of '' as a styleRule
         testSheet.addRule ? testSheet.addRule( 'c', 'blink' ) : testSheet.insertRule( 'c{}', 0 )
 
         // store the way to get to the list of rules
         DOMRules            = testSheet.rules ? 'rules' : 'cssRules'
 
-        // cache the test rule (its allways the first since we didn't have any other thing inside this <style>
+        // cache the test rule (its allways the first since we didn't add any other thing inside this <style>
         testStyle           = testSheet[ DOMRules ][ 0 ]
 
         // try catch it to prevent IE from throwing errors
-        // can't check the read only flag since IE just throws errors when setting it and Firefox won't allow setting it (and gas no read only flag
+        // can't check the read-only flag since IE just throws errors when setting it and Firefox won't allow setting it (and has no read-only flag
         try{
             testStyle.selectorText = 'd'
         }catch( e ){}
 
         // check if the selectorText has changed to the value we tried to set it to
-        var changeSelectorTextAllowed = 'd' === testStyle.selectorText || 'D' === testStyle.selectorText;
+        // toLowerCase() it to account for browsers who change the text
+        var changeSelectorTextAllowed = 'd' === testStyle.selectorText.toLowerCase();
 
         // remove the <style> to clean up
         check.parentNode.removeChild( check );
@@ -70,20 +71,19 @@ var scopePolyFill = ( function ( doc )
         {
             if ( '' === scopedSheets[ i ].getAttribute( 'scoped' ) )
                 tempSheets.push( scopedSheets[ i ] )
+            // Array.prototype.apply doen't work in the browsers this is eecuted for so we have to use array.push()
         }
         scopedSheets = tempSheets
     }
 
     i = scopedSheets.length
     while ( i-- )
-    {
         scopeIt( scopedSheets[ i ] )
-    }
 
     // make a function so we can return it to enable the "scoping" of other <styles> which are inserted later on for instance
     function scopeIt( styleNode, jQueryItem )
     {
-        // catch the item if were calling this via the $.each
+        // catch the second argument if this was called via the $.each
         if ( jQueryItem )
             styleNode = jQueryItem
 
@@ -102,16 +102,15 @@ var scopePolyFill = ( function ( doc )
 
         // init some vars
         var sheet       = styleNode[ compat.sheet ]
-        ,   allRules    = sheet[ compat.rules ]
+        ,   allRules    = sheet[     compat.rules ]
         ,   par         = styleNode.parentNode
-        ,   id          = par.id || ( par.id = 'scopedByScopePolyfill_' + ++idCounter )
+        ,   id          = par.id || ( par.id = 'scopedByScopedPolyfill_' + ++idCounter )
         ,   glue        = ''
-        ,   rule
         ,   index       = allRules.length || 0
+        ,   rule
         ,   selector
         ,   styleRule
         ;
-
 
          // get al the ids from the parents so we are as specific as possible
          // if no ids are found we always have the id which is placed on the <style>'s parentNode
@@ -129,7 +128,7 @@ var scopePolyFill = ( function ( doc )
             rule = allRules[ index ]
             selector = glue + ' ' + rule.selectorText.split( ',' ).join( ', ' + glue )
 
-            // we can just change the selectorText for this
+            // we can just change the selectorText for this one
             if ( compat.changeSelectorTextAllowed )
             {
                 rule.selectorText = selector;
@@ -140,7 +139,7 @@ var scopePolyFill = ( function ( doc )
                  * IE only adds the normal rules to the array (no @imports, @page etc)
                  * and also does not have a type attribute so we check if that exists and execute the old IE part if it doesn't
                  * all other browsers have the type attribute to show the type
-                 *  1 : normal style rules
+                 *  1 : normal style rules  <---- use these ones
                  *  2 : @charset
                  *  3 : @import
                  *  4 : @media
@@ -148,15 +147,13 @@ var scopePolyFill = ( function ( doc )
                  *  6 : @page rules
                  *
                  */
-                if ( "undefined" === typeof rule.type || 1 === rule.type )
+                if ( !rule.type || 1 === rule.type )
                 {
                     styleRule = rule.style.cssText
                     sheet.removeRule    ? sheet.removeRule( index )             : sheet.deleteRule( index )
                     sheet.addRule       ? sheet.addRule( selector, styleRule )  : sheet.insertRule( selector + '{' + styleRule + '}', index )
-
                 }
             }
-
         }
     }
 
