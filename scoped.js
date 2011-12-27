@@ -1,5 +1,5 @@
-var scopedPolyFill = ( function ( doc )
-{
+var scopedPolyFill = ( function ( doc ) {
+    
     // check for support of scoped and certain option
     var compat = (function ()
     {
@@ -13,23 +13,23 @@ var scopedPolyFill = ( function ( doc )
 
         // we need to append it to the DOM because the DOM element at least FF keeps NULL as a sheet utill appended
         // and we can't check for the rules / cssRules and changeSelectorText untill we have that
-        doc.body.appendChild( check )
-        testSheet           = check[ DOMStyle ]
+        doc.body.appendChild( check );
+        testSheet           = check[ DOMStyle ];
 
         // add a test styleRule to be able to test selectorText changing support
         // IE doesn't allow inserting of '' as a styleRule
-        testSheet.addRule ? testSheet.addRule( 'c', 'blink' ) : testSheet.insertRule( 'c{}', 0 )
+        testSheet.addRule ? testSheet.addRule( 'c', 'blink' ) : testSheet.insertRule( 'c{}', 0 );
 
         // store the way to get to the list of rules
-        DOMRules            = testSheet.rules ? 'rules' : 'cssRules'
+        DOMRules            = testSheet.rules ? 'rules' : 'cssRules';
 
         // cache the test rule (its allways the first since we didn't add any other thing inside this <style>
-        testStyle           = testSheet[ DOMRules ][ 0 ]
+        testStyle           = testSheet[ DOMRules ][ 0 ];
 
         // try catch it to prevent IE from throwing errors
         // can't check the read-only flag since IE just throws errors when setting it and Firefox won't allow setting it (and has no read-only flag
         try{
-            testStyle.selectorText = 'd'
+            testStyle.selectorText = 'd';
         }catch( e ){}
 
         // check if the selectorText has changed to the value we tried to set it to
@@ -46,59 +46,65 @@ var scopedPolyFill = ( function ( doc )
         ,   sheet: DOMStyle
         ,   changeSelectorTextAllowed: changeSelectorTextAllowed
         }
-    } ) ()
+    } ) ();
 
     // scope is supported? just return
     if ( compat.scopeSupported )
-        return
+        return;
 
     // this was called so we "scope" all the <style> nodes which need to be scoped now
     var scopedSheets
     ,   i
     ,   idCounter = 0
     ;
-    if ( doc.querySelectorAll )
-    {
-        scopedSheets = doc.querySelectorAll( 'style[scoped]' )
-    }
-    else
-    {
-        var tempSheets = []
-        scopedSheets = doc.getElementsByTagName( 'style' )
-        i = scopedSheets.length
 
-        while ( i-- )
-        {
+    if ( doc.querySelectorAll ) {
+
+        scopedSheets = doc.querySelectorAll( 'style[scoped]' );
+
+    } else {
+
+        var tempSheets = [];
+        scopedSheets = doc.getElementsByTagName( 'style' );
+        i = scopedSheets.length;
+
+        while ( i-- ) {
+
             if ( '' === scopedSheets[ i ].getAttribute( 'scoped' ) )
-                tempSheets.push( scopedSheets[ i ] )
+                tempSheets.push( scopedSheets[ i ] );
             // Array.prototype.apply doen't work in the browsers this is eecuted for so we have to use array.push()
+
         }
-        scopedSheets = tempSheets
+
+        scopedSheets = tempSheets;
+
     }
 
-    i = scopedSheets.length
+    i = scopedSheets.length;
     while ( i-- )
-        scopeIt( scopedSheets[ i ] )
+        scopeIt( scopedSheets[ i ] );
 
     // make a function so we can return it to enable the "scoping" of other <styles> which are inserted later on for instance
-    function scopeIt( styleNode, jQueryItem )
-    {
+    function scopeIt( styleNode, jQueryItem ) {
+
         // catch the second argument if this was called via the $.each
         if ( jQueryItem )
-            styleNode = jQueryItem
+            styleNode = jQueryItem;
 
         // check if we received a <style> node
         // if not chcek if it's a jQuery object and go from there
         // if no <style> and no jQuery? return to avoid errors
-        if ( !styleNode.nodeName )
-        {
+        if ( !styleNode.nodeName ) {
+
             if ( !styleNode.jquery )
-                return
+                return;
             else
-                return styleNode.each( scopeIt )
+                return styleNode.each( scopeIt );
+
         }
+
         if ( 'style' !== styleNode.nodeName.toLowerCase() )
-            return
+            return;
 
         // init some vars
         var sheet       = styleNode[ compat.sheet ]
@@ -114,27 +120,29 @@ var scopedPolyFill = ( function ( doc )
 
          // get al the ids from the parents so we are as specific as possible
          // if no ids are found we always have the id which is placed on the <style>'s parentNode
-        while ( par )
-        {
+        while ( par ) {
+
             if ( par.id )
-                glue = '#' + par.id + ' ' + glue
-            par = par.parentNode
+                glue = '#' + par.id + ' ' + glue;
+
+            par = par.parentNode;
+
         }
 
         // iterate over the collection from the end back to account for IE's inability to insert a styleRule at a certain point
         // it can only add them to the end...
-        while( index-- )
-        {
-            rule = allRules[ index ]
-            selector = glue + ' ' + rule.selectorText.split( ',' ).join( ', ' + glue )
+        while ( index-- ) {
+
+            rule = allRules[ index ];
+            selector = glue + ' ' + rule.selectorText.split( ',' ).join( ', ' + glue );
 
             // we can just change the selectorText for this one
-            if ( compat.changeSelectorTextAllowed )
-            {
+            if ( compat.changeSelectorTextAllowed ) {
+
                 rule.selectorText = selector;
-            }
-            else // or we need to remove the rule and add it back in if we cant edit the selectorText
-            {
+
+            } else {// or we need to remove the rule and add it back in if we cant edit the selectorText
+
                 /*
                  * IE only adds the normal rules to the array (no @imports, @page etc)
                  * and also does not have a type attribute so we check if that exists and execute the old IE part if it doesn't
@@ -147,16 +155,17 @@ var scopedPolyFill = ( function ( doc )
                  *  6 : @page rules
                  *
                  */
-                if ( !rule.type || 1 === rule.type )
-                {
-                    styleRule = rule.style.cssText
-                    sheet.removeRule    ? sheet.removeRule( index )             : sheet.deleteRule( index )
-                    sheet.addRule       ? sheet.addRule( selector, styleRule )  : sheet.insertRule( selector + '{' + styleRule + '}', index )
+                if ( !rule.type || 1 === rule.type ) {
+
+                    styleRule = rule.style.cssText;
+                    sheet.removeRule    ? sheet.removeRule( index )             : sheet.deleteRule( index );
+                    sheet.addRule       ? sheet.addRule( selector, styleRule )  : sheet.insertRule( selector + '{' + styleRule + '}', index );
+
                 }
             }
         }
     }
 
-    return scopeIt
+    return scopeIt;
 
 } ) ( document );
