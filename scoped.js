@@ -135,6 +135,9 @@ var scopedPolyFill = ( function ( doc ) {
 
             rule = allRules[ index ];
             selector = glue + ' ' + rule.selectorText.split( ',' ).join( ', ' + glue );
+            
+            // replace :root by the scoped element
+            selector = selector.replace(new RegExp('[\ ]+:root', 'gi'), '');
 
             // we can just change the selectorText for this one
             if ( compat.changeSelectorTextAllowed ) {
