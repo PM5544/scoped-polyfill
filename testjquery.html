@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+<meta charset="utf-8" />
+<title>JavaScript scoped polyfill test page</title>
+<link rel="stylesheet" type="text/css" href="ugly.css" />
+</head>
+<body>
+
+<style>
+/* putItHereToTestIfItWouldBreakWhenMultipleStyleNodesWhereInTheDOM */
+</style>
+<div id="testID1">
+
+    <div class="widgetContent">
+        <h1>my ugly widget</h1>
+        <ol>
+            <li>my first ugly list item
+            <li>my second ugly list item
+        </ol>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a turpis ut enim venenatis consectetur eu ac risus. Quisque sollicitudin enim luctus turpis viverra eget elementum sapien ultricies. Donec ultrices mollis risus, vitae sagittis lectus molestie sed. Curabitur rhoncus, velit nec adipiscing adipiscing, mi est pharetra libero, et tincidunt sapien magna sit amet nulla. Nulla vitae ultricies erat. Pellentesque laoreet feugiat tellus, at luctus nibh sodales et. Nulla vehicula faucibus neque. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec ullamcorper ipsum eu quam dapibus ut varius lorem suscipit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+    </div>
+
+    <div id="testID2">
+
+        <div class="scopeThis">
+            <div class="widgetContent">
+                <h1>my first super pretty widget</h1>
+                <ol>
+                    <li>my first Uber list item
+                    <li>my second cool list item
+                    <li>my thrid shiny list item
+                </ol>
+                <p>Lorem ipsizzle dolizzle sit amet, consectetizzle adipiscing break yo neck, yall. Nullizzle brizzle velizzle, daahng dawg volutpizzle, suscipizzle black, dawg vizzle, crunk. Pellentesque yo tortor. Owned izzle. Ma nizzle izzle dolor dapibus turpis crazy . Mauris pellentesque nibh et turpizzle. Gizzle in tortizzle. I'm in the shizzle break it down rhoncizzle nisi. In break yo neck, yall sure platea dictumst. Dawg dapibizzle. Curabitur stuff urna, fo shizzle pot, yippiyo i'm in the shizzle, fo shizzle vitae, my shizz. Black suscipizzle. Integizzle sempizzle velit sizzle break it down.</p>
+             </div>
+        </div>
+
+        <div class="scopeThis">
+            <div class="widgetContent">
+                <h1>my second super pretty widget</h1>
+                <ol>
+                    <li>my first Uber list item
+                    <li>my second cool list item
+                    <li>my thrid shiny list item
+                </ol>
+                <p>Lorem ipsizzle dolizzle sit amet, consectetizzle adipiscing break yo neck, yall. Nullizzle brizzle velizzle, daahng dawg volutpizzle, suscipizzle black, dawg vizzle, crunk. Pellentesque yo tortor. Owned izzle. Ma nizzle izzle dolor dapibus turpis crazy . Mauris pellentesque nibh et turpizzle. Gizzle in tortizzle. I'm in the shizzle break it down rhoncizzle nisi. In break yo neck, yall sure platea dictumst. Dawg dapibizzle. Curabitur stuff urna, fo shizzle pot, yippiyo i'm in the shizzle, fo shizzle vitae, my shizz. Black suscipizzle. Integizzle sempizzle velit sizzle break it down.</p>
+             </div>
+        </div>
+
+    </div>
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script src="scoped.js"></script>
+<script>
+// append the style node like it was loaded through AJAX or something and appended to the DOM after loading
+// and run it through the polyfill function right away
+var $appendedStyles = $( "<style scoped>.widgetContent{ border:none;font-family: Verdana,sans-serif;border-radius: 5px;box-shadow: 2px 2px 5px rgba( 30,30,30,.5 );padding:10px 20px;}"
+    +     ".widgetContent,.widgetContent h1,.widgetContent li,.widgetContent ul,.widgetContent ol,.widgetContent p{background:#fff;border:none;color:#000;}"
+    +     "h1{font-size:16px;line-height:2em;padding: 0;} li{list-style: disc inside;padding: 3px 3px 3px 10px;border-bottom: 1px solid #e0e0e0;}"
+    +     "ul,ol{padding:5px;}p{margin: 1em 0;}</style>"
+)
+.prependTo(
+    $( ".scopeThis" )
+)
+// call it on the <style> not on the containing node!
+scopePolyFill( $appendedStyles )
+</script>
+</body>
+</html>
