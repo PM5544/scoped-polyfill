@@ -1,11 +1,11 @@
-var scopedPolyFill = ( function ( doc ) {
-    
+var scopedPolyFill = ( function ( doc, undefined ) {
+
     // check for support of scoped and certain option
     var compat = (function ()
     {
         var check           = doc.createElement( 'style' )
         ,   DOMStyle        = 'undefined' !== typeof check.sheet ? 'sheet' : 'undefined' !== typeof check.getSheet ? 'getSheet' : 'styleSheet'
-        ,   scopeSupported  = '' === check.scoped
+        ,   scopeSupported  = undefined !== check.scoped
         ,   testSheet
         ,   DOMRules
         ,   testStyle
@@ -45,12 +45,14 @@ var scopedPolyFill = ( function ( doc ) {
         ,   rules: DOMRules
         ,   sheet: DOMStyle
         ,   changeSelectorTextAllowed: changeSelectorTextAllowed
-        }
+        };
     } ) ();
 
     // scope is supported? just return
     if ( compat.scopeSupported )
         return;
+
+    console && console.log( "No support for <style scoped> found, commencing jumping through hoops in 3, 2, 1..." );
 
     // this was called so we "scope" all the <style> nodes which need to be scoped now
     var scopedSheets
@@ -64,13 +66,14 @@ var scopedPolyFill = ( function ( doc ) {
 
     } else {
 
-        var tempSheets = [];
+        var tempSheets = [], scopedAttr;
         scopedSheets = doc.getElementsByTagName( 'style' );
         i = scopedSheets.length;
 
         while ( i-- ) {
+            scopedAttr = scopedSheets[ i ].getAttribute( 'scoped' );
 
-            if ( '' === scopedSheets[ i ].getAttribute( 'scoped' ) )
+            if ( "scoped" === scopedAttr || "" === scopedAttr )
                 tempSheets.push( scopedSheets[ i ] );
             // Array.prototype.apply doen't work in the browsers this is eecuted for so we have to use array.push()
 
@@ -103,7 +106,7 @@ var scopedPolyFill = ( function ( doc ) {
 
         }
 
-        if ( 'style' !== styleNode.nodeName.toLowerCase() )
+        if ( 'STYLE' !== styleNode.nodeName )
             return;
 
         // init some vars
@@ -135,9 +138,9 @@ var scopedPolyFill = ( function ( doc ) {
 
             rule = allRules[ index ];
             selector = glue + ' ' + rule.selectorText.split( ',' ).join( ', ' + glue );
-            
+
             // replace :root by the scoped element
-            selector = selector.replace(new RegExp('[\ ]+:root', 'gi'), '');
+            selector = selector.replace( /[\ ]+:root/gi, '' );
 
             // we can just change the selectorText for this one
             if ( compat.changeSelectorTextAllowed ) {
