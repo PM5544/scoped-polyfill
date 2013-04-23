@@ -48,9 +48,9 @@ var scopedPolyFill = ( function ( doc, undefined ) {
         };
     } ) ();
 
-    // scope is supported? just return
+    // scope is supported? just return a function which returns "this" when scoped support is found to make it chainable for jQuery
     if ( compat.scopeSupported )
-        return;
+        return function (){ return this};
 
     console && console.log( "No support for <style scoped> found, commencing jumping through hoops in 3, 2, 1..." );
 
