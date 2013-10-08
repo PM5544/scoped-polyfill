@@ -52,7 +52,7 @@ var scopedPolyFill = ( function ( doc, undefined ) {
     if ( compat.scopeSupported )
         return function (){ return this};
 
-    console && console.log( "No support for <style scoped> found, commencing jumping through hoops in 3, 2, 1..." );
+    window.console && console.log( "No support for <style scoped> found, commencing jumping through hoops in 3, 2, 1..." );
 
     // this was called so we "scope" all the <style> nodes which need to be scoped now
     var scopedSheets
