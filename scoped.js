@@ -171,6 +171,13 @@ var scopedPolyFill = ( function ( doc, undefined ) {
             }
         }
     }
+    
+    // Expose it as a jQuery function for convenience
+    if (typeof jQuery === "function" && typeof jQuery.fn === "object") {
+        jQuery.fn.scopedPolyFill = function(){
+            return this.each(scopeIt);
+        }
+    }
 
     return scopeIt;
 
