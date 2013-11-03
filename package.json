@@ -1,0 +1,22 @@
+{
+  "name": "scoped-polyfill",
+  "version": "0.1.0",
+  "description": "a polyfill for <style scoped>",
+  "main": "scoped.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PM5544/scoped-polyfill.git"
+  },
+  "keywords": [
+    "scoped",
+    "polyfill",
+    "styles"
+  ],
+  "author": "PM5544 Joël Kuijten",
+  "license": "DWTFYW",
+  "readmeFilename": "readme.md",
+  "gitHead": "4f5231d568b996638819c9e42080947de15a7830"
+}
