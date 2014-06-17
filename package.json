@@ -1,6 +1,6 @@
 {
   "name": "scoped-polyfill",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "a polyfill for <style scoped>",
   "main": "scoped.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/PM5544/scoped-polyfill.git"
+    "url": "https://github.com/ballPointPenguin/scoped-polyfill.git"
   },
   "keywords": [
     "scoped",
@@ -18,5 +18,5 @@
   "author": "PM5544 Joël Kuijten",
   "license": "DWTFYW",
   "readmeFilename": "readme.md",
-  "gitHead": "4f5231d568b996638819c9e42080947de15a7830"
+  "gitHead": "622d29612ec6a8ecffda911df6d4e19909a8ff8a"
 }
