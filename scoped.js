@@ -167,7 +167,7 @@ var scopedPolyFill = ( function ( doc, undefined ) {
                     // IE doesn't allow inserting of '' as a styleRule
                     if (styleRule) {
                       sheet.removeRule    ? sheet.removeRule( index )             : sheet.deleteRule( index );
-                      sheet.addRule       ? sheet.addRule( selector, styleRule )  : sheet.insertRule( selector + '{' + styleRule + '}', index );
+                      sheet.addRule       ? sheet.addRule( selector, styleRule, index )  : sheet.insertRule( selector + '{' + styleRule + '}', index );
                     }
                 }
             }
